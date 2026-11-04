@@ -1,0 +1,527 @@
+{
+  "_help": [
+    "You can edit this file by hand, or use the Map Editor at http://127.0.0.1:8787/editor",
+    "while the bridge is running. The editor can search GeoGuessr and verify IDs for you.",
+    "",
+    "Each map has:",
+    "  shorthand      What your friend may type. Keep it short.",
+    "  geoguessrName  The exact map name on GeoGuessr. Used for automatic searching.",
+    "  mapId          Optional. Community map ID, or official slug like world/usa/indonesia/malaysia.",
+    "  defaultMode    Optional. move/nm/nmpz applied when the message has only the map.",
+    "  aliases        Extra words that should select this map.",
+    "  weight         Only used by the optional 'random' command.",
+    "",
+    "An explicit mode in the message still overrides defaultMode.",
+    "Example: YB has defaultMode move, so 'YB' applies Move and 'YB NM' applies NM."
+  ],
+  "maps": [
+    {
+      "shorthand": "ACW",
+      "geoguessrName": "A Community World",
+      "mapId": "62a44b22040f04bd36e8a914",
+      "defaultMode": "",
+      "aliases": [],
+      "weight": 3
+    },
+    {
+      "shorthand": "A Pinpointable World",
+      "geoguessrName": "A Pinpointable World",
+      "mapId": "6029991c5048850001d572a9",
+      "defaultMode": "",
+      "aliases": [
+        "pinpointable",
+        "apw"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "An Official World",
+      "geoguessrName": "An Official World",
+      "mapId": "652ba0d9002aa0d36f996153",
+      "defaultMode": "",
+      "aliases": [
+        "aow"
+      ],
+      "weight": 3
+    },
+    {
+      "shorthand": "Dirty World",
+      "geoguessrName": "Dirty World",
+      "mapId": "63f3ff1e0355e40ded075e0c",
+      "defaultMode": "",
+      "aliases": [
+        "dirty",
+        "adw"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "ARW",
+      "geoguessrName": "A Rural World",
+      "mapId": "5be0de51fe3a84037ca36447",
+      "defaultMode": "",
+      "aliases": [
+        "rural",
+        "rural world"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "AARW",
+      "geoguessrName": "An Arbitrary Rural World",
+      "mapId": "643dbc7ccc47d3a344307998",
+      "defaultMode": "",
+      "aliases": [
+        "aarw",
+        "arbitrary rural",
+        "arbitrary rural world"
+      ],
+      "weight": 10
+    },
+    {
+      "shorthand": "AI Degen",
+      "geoguessrName": "AI Degenerated World",
+      "mapId": "6367bcd862285023a1d61e75",
+      "defaultMode": "",
+      "aliases": [
+        "degenerated",
+        "ai degenerated"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "AI Gen",
+      "geoguessrName": "AI Generated World",
+      "mapId": "5dbaf08ed0d2a478444d2e8e",
+      "defaultMode": "",
+      "aliases": [
+        "ai gen",
+        "aigen"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "AAW",
+      "geoguessrName": "An Arbitrary World",
+      "mapId": "6089bfcff6a0770001f645dd",
+      "defaultMode": "",
+      "aliases": [
+        "arbitrary",
+        "arbitrary world"
+      ],
+      "weight": 3
+    },
+    {
+      "shorthand": "AIW",
+      "geoguessrName": "An Improved World",
+      "mapId": "5b0a80f8596695b708122809",
+      "defaultMode": "",
+      "aliases": [
+        "improved",
+        "aiw"
+      ],
+      "weight": 3
+    },
+    {
+      "shorthand": "urban",
+      "geoguessrName": "An Urban World",
+      "mapId": "640d01bf1b14982128374759",
+      "defaultMode": "",
+      "aliases": [
+        "urban",
+        "auw"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "ISTS",
+      "geoguessrName": "I saw the sign",
+      "mapId": "5cfda2c9bc79e16dd866104d",
+      "defaultMode": "",
+      "aliases": [
+        "saw the sign",
+        "sign"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "Indonesia",
+      "geoguessrName": "Indonesia",
+      "mapId": "indonesia",
+      "defaultMode": "",
+      "aliases": [
+        "indonesia"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "Malaysia",
+      "geoguessrName": "Malaysia",
+      "mapId": "malaysia",
+      "defaultMode": "",
+      "aliases": [
+        "malaysia"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "USA",
+      "geoguessrName": "USA",
+      "mapId": "usa",
+      "defaultMode": "",
+      "aliases": [
+        "usa",
+        "united states"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "World",
+      "geoguessrName": "World",
+      "mapId": "world",
+      "defaultMode": "",
+      "aliases": [
+        "world"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "ATW",
+      "geoguessrName": "A Tweaked World",
+      "mapId": "64205c50e014cf9bb1a04e01",
+      "defaultMode": "",
+      "aliases": [
+        "tweaked",
+        "tweaked world"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "AVW",
+      "geoguessrName": "A Varied World",
+      "mapId": "64ce812adc7614680516ff8c",
+      "defaultMode": "",
+      "aliases": [
+        "varied",
+        "varied world"
+      ],
+      "weight": 3
+    },
+    {
+      "shorthand": "ASW",
+      "geoguessrName": "A Skewed World",
+      "mapId": "6165f7176c26ac00016bca3d",
+      "defaultMode": "nmpz",
+      "aliases": [
+        "skewed",
+        "skewed world"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "rainbolt",
+      "geoguessrName": "A Rainbolt World",
+      "mapId": "65c86935d327035509fd616f",
+      "defaultMode": "",
+      "aliases": [
+        "rainbolt",
+        "rainbolt world"
+      ],
+      "weight": 3
+    },
+    {
+      "shorthand": "ACP",
+      "geoguessrName": "A Curated Planet",
+      "mapId": "642a97be3c5b7968a1eb1af3",
+      "defaultMode": "",
+      "aliases": [
+        "curated",
+        "curated planet"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "Terminus",
+      "geoguessrName": "Terminus",
+      "mapId": "64919f3c95165ff26469091a",
+      "defaultMode": "",
+      "aliases": [
+        "terminus"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "inter",
+      "geoguessrName": "Intersectionguessr",
+      "mapId": "61325442eadbec00018b6385",
+      "defaultMode": "",
+      "aliases": [
+        "intersection",
+        "intersectionguessr"
+      ],
+      "weight": 3
+    },
+    {
+      "shorthand": "pro",
+      "geoguessrName": "A Pro World",
+      "mapId": "6620b311f64a7b842b2ca83a",
+      "defaultMode": "",
+      "aliases": [
+        "pro",
+        "pro world"
+      ],
+      "weight": 3
+    },
+    {
+      "shorthand": "z8",
+      "geoguessrName": "A zi8gzag world",
+      "mapId": "672efde5c22a8c3d28dc5554",
+      "defaultMode": "",
+      "aliases": [
+        "zi8gzag",
+        "zigzag"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "ai pop",
+      "geoguessrName": "AI Populated World",
+      "mapId": "61f1cafb52502d0001a9a5b6",
+      "defaultMode": "",
+      "aliases": [
+        "populated",
+        "ai populated"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "ARPZW",
+      "geoguessrName": "A Random Pan & Zoom World",
+      "mapId": "650236876f4b3e608b9549c2",
+      "defaultMode": "nmpz",
+      "aliases": [
+        "pan zoom",
+        "pan and zoom",
+        "rpz"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "geod",
+      "geoguessrName": "Geodetective World",
+      "mapId": "",
+      "defaultMode": "",
+      "aliases": [
+        "geodetective",
+        "detective"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "UR",
+      "geoguessrName": "Urban Roulette",
+      "mapId": "",
+      "defaultMode": "",
+      "aliases": [
+        "roulette",
+        "urban roulette"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "comp",
+      "geoguessrName": "A Competitive World",
+      "mapId": "668ea3252973190af74233b5",
+      "defaultMode": "",
+      "aliases": [
+        "comp",
+        "comp world"
+      ],
+      "weight": 10
+    },
+    {
+      "shorthand": "Supersonic",
+      "geoguessrName": "Supersonic",
+      "mapId": "",
+      "defaultMode": "",
+      "aliases": [
+        "supersonic"
+      ],
+      "weight": 3
+    },
+    {
+      "shorthand": "SIGNS",
+      "geoguessrName": "SIGNS",
+      "mapId": "",
+      "defaultMode": "",
+      "aliases": [
+        "signs"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "AEW",
+      "geoguessrName": "An Extraordinary World",
+      "mapId": "5cd30a0d17e6fc441ceda867",
+      "defaultMode": "",
+      "aliases": [
+        "extraordinary",
+        "extraordinary world"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "AER",
+      "geoguessrName": "An Extraordinary Road",
+      "mapId": "",
+      "defaultMode": "",
+      "aliases": [
+        "extraordinary road"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "informed",
+      "geoguessrName": "Informed World",
+      "mapId": "",
+      "defaultMode": "",
+      "aliases": [
+        "informed",
+        "informed world"
+      ],
+      "weight": 3
+    },
+    {
+      "shorthand": "50/50",
+      "geoguessrName": "50/50 world",
+      "mapId": "",
+      "defaultMode": "nmpz",
+      "aliases": [
+        "50 50",
+        "5050",
+        "fifty fifty"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "2069",
+      "geoguessrName": "GeoGuessr in 2069",
+      "mapId": "643b19d4490671c1730be963",
+      "defaultMode": "",
+      "aliases": [
+        "2069",
+        "geoguessr in 2069"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "ER",
+      "geoguessrName": "Extreme Regionguessing",
+      "mapId": "63cfd5ba9512ebc734807d3d",
+      "defaultMode": "",
+      "aliases": [
+        "extreme region",
+        "extreme regionguessing"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "LER",
+      "geoguessrName": "Less Extreme Regionguessing",
+      "mapId": "658a3ef12255cca9e7f39c06",
+      "defaultMode": "",
+      "aliases": [
+        "less extreme",
+        "less extreme regionguessing"
+      ],
+      "weight": 1
+    },
+    {
+      "shorthand": "GS",
+      "geoguessrName": "GeoGuessr Saturday",
+      "mapId": "",
+      "defaultMode": "",
+      "aliases": [
+        "saturday",
+        "geoguessr saturday"
+      ],
+      "weight": 3
+    },
+    {
+      "shorthand": "GT",
+      "geoguessrName": "GeoTime",
+      "mapId": "63c23ec9563ddfcf1b8cd67e",
+      "defaultMode": "",
+      "aliases": [
+        "geotime"
+      ],
+      "weight": 3
+    },
+    {
+      "shorthand": "AEIW",
+      "geoguessrName": "An Extra Informed World",
+      "mapId": "",
+      "defaultMode": "",
+      "aliases": [
+        "extra informed",
+        "extra informed world"
+      ],
+      "weight": 3
+    },
+    {
+      "shorthand": "Yellow Belly",
+      "geoguessrName": "Yellow Belly",
+      "mapId": "",
+      "defaultMode": "",
+      "aliases": [
+        "yellow belly",
+        "yellow"
+      ],
+      "weight": 3
+    },
+    {
+      "shorthand": "AMW",
+      "geoguessrName": "A Moving World",
+      "mapId": "696fe47c5b07bed052077a95",
+      "defaultMode": "move",
+      "aliases": [
+        "amw",
+        "moving world"
+      ],
+      "weight": 10
+    },
+    {
+      "shorthand": "AMMW",
+      "geoguessrName": "A Modified Moving World",
+      "mapId": "",
+      "defaultMode": "move",
+      "aliases": [
+        "ammw",
+        "modified moving",
+        "modified moving world"
+      ],
+      "weight": 3
+    },
+    {
+      "shorthand": "anti",
+      "geoguessrName": "Antibiotic",
+      "mapId": "",
+      "defaultMode": "",
+      "aliases": [
+        "antibiotic"
+      ],
+      "weight": 3
+    },
+    {
+      "shorthand": "indoor",
+      "geoguessrName": "An Indoor World",
+      "mapId": "",
+      "defaultMode": "",
+      "aliases": [
+        "indoor",
+        "indoor world"
+      ],
+      "weight": 1
+    }
+  ]
+}

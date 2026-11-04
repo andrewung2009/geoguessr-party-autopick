@@ -1,0 +1,1054 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GeoGuessr Party Autopick - Map Editor</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #111827;
+      --panel-2: #0f172a;
+      --line: #374151;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --blue: #2563eb;
+      --blue-2: #1d4ed8;
+      --green: #16a34a;
+      --yellow: #ca8a04;
+      --red: #dc2626;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    a { color: #60a5fa; }
+    .wrap { max-width: 1500px; margin: 0 auto; padding: 20px; }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+    h1 { font-size: 20px; margin: 0; }
+    h1 span { color: var(--muted); font-weight: 500; font-size: 13px; }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel);
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+    .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .grow { flex: 1; min-width: 180px; }
+    label { display: block; color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 5px; }
+    input, select {
+      width: 100%;
+      padding: 8px 9px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #030712;
+      color: var(--text);
+      font: inherit;
+      outline: none;
+    }
+    input:focus, select:focus { border-color: #60a5fa; }
+    input[type="number"] { width: 82px; }
+    button {
+      border: 0;
+      border-radius: 7px;
+      background: #374151;
+      color: #fff;
+      padding: 8px 11px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    button:hover { background: #4b5563; }
+    button.primary { background: var(--blue); }
+    button.primary:hover { background: var(--blue-2); }
+    button.good { background: var(--green); }
+    button.good:hover { background: #15803d; }
+    button.bad { background: var(--red); }
+    button.bad:hover { background: #b91c1c; }
+    button:disabled { opacity: .5; cursor: wait; }
+    .small { font-size: 12px; }
+    .muted { color: var(--muted); }
+    .hidden { display: none !important; }
+    .stats { display: flex; gap: 16px; flex-wrap: wrap; color: var(--muted); font-size: 12px; }
+    .stats b { color: var(--text); }
+    .banner {
+      border: 1px solid #92400e;
+      background: #451a03;
+      color: #fde68a;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+      white-space: pre-wrap;
+    }
+    .banner.ok { border-color: #166534; background: #052e16; color: #bbf7d0; }
+    .banner.bad { border-color: #991b1b; background: #450a0a; color: #fecaca; }
+    .table-wrap { overflow: auto; border: 1px solid var(--line); border-radius: 12px; }
+    table { width: 100%; border-collapse: collapse; min-width: 1100px; }
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      text-align: left;
+      background: #1f2937;
+      color: #d1d5db;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      padding: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+    tbody td { padding: 8px 10px; border-bottom: 1px solid #1f2937; vertical-align: top; }
+    tbody tr:hover { background: #0f172a; }
+    .col-sh { min-width: 150px; }
+    .col-alias { min-width: 220px; }
+    .col-name { min-width: 220px; }
+    .col-id { min-width: 260px; }
+    .col-mode { min-width: 140px; }
+    .col-weight { width: 90px; }
+    .col-status { min-width: 130px; }
+    .col-actions { min-width: 190px; }
+    .hint { color: var(--muted); font-size: 11px; margin-top: 4px; word-break: break-all; }
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .badge.ok { background: #052e16; color: #86efac; border: 1px solid #166534; }
+    .badge.warn { background: #422006; color: #fde68a; border: 1px solid #92400e; }
+    .badge.bad { background: #450a0a; color: #fecaca; border: 1px solid #991b1b; }
+    .badge.gray { background: #1f2937; color: #d1d5db; border: 1px solid #374151; }
+    .status-stack { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+    .actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    .actions button { padding: 6px 8px; font-size: 12px; }
+    .results-row td { background: #0b1222; border-bottom: 1px solid var(--line); padding: 10px; }
+    .results {
+      display: grid;
+      gap: 6px;
+      max-height: 320px;
+      overflow: auto;
+    }
+    .result {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #111827;
+    }
+    .result-main { min-width: 0; }
+    .result-name { font-weight: 700; }
+    .result-id { color: var(--muted); font-size: 11px; word-break: break-all; }
+    .result button { padding: 6px 10px; font-size: 12px; }
+    .toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: end; }
+    .toolbar .field { min-width: 220px; }
+    .preview { display: flex; gap: 8px; align-items: end; }
+    .preview .field { flex: 1; }
+    .preview-result { margin-top: 10px; white-space: pre-wrap; }
+    .connect-card { max-width: 620px; }
+    .connect-card .row { align-items: end; }
+    .status-line { margin-top: 10px; white-space: pre-wrap; }
+    .footer-note { color: var(--muted); font-size: 12px; margin-top: 10px; }
+    @media (max-width: 700px) {
+      .wrap { padding: 12px; }
+      header { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>GeoGuessr Party Autopick <span>/ Map Editor</span></h1>
+      <div class="row">
+        <button id="open-geoguessr" type="button">Open GeoGuessr</button>
+        <button id="forget" type="button">Forget secret</button>
+      </div>
+    </header>
+
+    <div id="connect-panel" class="card connect-card">
+      <h2 style="margin:0 0 8px;font-size:16px;">Connect to the local bridge</h2>
+      <p class="muted small" style="margin:0 0 12px;">
+        Paste the <code>BRIDGE_SECRET</code> from your <code>.env</code> file. It stays in this browser only.
+      </p>
+      <div class="row">
+        <div class="grow">
+          <label for="secret-input">Bridge secret</label>
+          <input id="secret-input" type="password" autocomplete="off" spellcheck="false" />
+        </div>
+        <button id="connect-btn" class="primary" type="button">Connect</button>
+      </div>
+      <div id="connect-msg" class="status-line muted"></div>
+    </div>
+
+    <div id="app" class="hidden">
+      <div class="card">
+        <div class="stats" id="stats"></div>
+        <div id="banner" class="banner hidden" style="margin-top:12px;"></div>
+        <div class="toolbar" style="margin-top:12px;">
+          <div class="field grow">
+            <label for="filter">Filter maps</label>
+            <input id="filter" type="text" placeholder="Filter by shorthand, keyword, or search name..." />
+          </div>
+          <button id="reload" type="button">Reload from disk</button>
+          <button id="add" type="button">Add map</button>
+          <button id="test-keywords" type="button">Test keywords</button>
+          <button id="verify-all" type="button">Verify all</button>
+          <button id="save" class="good" type="button">Save changes</button>
+        </div>
+        <div class="footer-note">
+          Search + keyword testing uses your open GeoGuessr tab. If search says "not connected", open
+          <code>geoguessr.com/party</code> with the Tampermonkey script running.
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="col-sh">Shorthand</th>
+              <th class="col-alias">Keywords / aliases</th>
+              <th class="col-name">Search on GeoGuessr</th>
+              <th class="col-id">Map ID / official slug</th>
+              <th class="col-mode">Default mode</th>
+              <th class="col-weight">Weight</th>
+              <th class="col-status">Status</th>
+              <th class="col-actions">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="map-body"></tbody>
+        </table>
+      </div>
+
+      <div class="card" style="margin-top:14px;">
+        <label for="preview-input">Preview a command</label>
+        <div class="preview">
+          <div class="field">
+            <input id="preview-input" type="text" placeholder="e.g. comp NM" autocomplete="off" />
+          </div>
+          <button id="preview-btn" class="primary" type="button">Preview</button>
+        </div>
+        <div id="preview-result" class="preview-result muted"></div>
+        <div class="footer-note">
+          <b>Shorthand</b> is the map's main code. <b>Keywords</b> are extra codes that also select it.
+          Your friend can type any of them, then an optional mode: <code>comp NM</code>.
+          The <b>search field</b> is what gets sent to GeoGuessr's map search, not what your friend types.
+          <b>Default mode</b> is applied when the message has only the map; an explicit mode in the message overrides it.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const state = {
+      secret: localStorage.getItem('ggap_editor_secret') || '',
+      maps: [],
+      conflicts: [],
+      filter: ''
+    };
+
+    const el = (id) => document.getElementById(id);
+    const normalize = (value) =>
+      String(value || '')
+        .toLowerCase()
+        .replace(/&/g, ' and ')
+        .replace(/[^a-z0-9]+/g, ' ')
+        .trim()
+        .replace(/\s+/g, ' ');
+
+    function setBanner(text, type) {
+      const banner = el('banner');
+      if (!banner) return;
+      banner.textContent = text || '';
+      banner.className = `banner ${type || ''} ${text ? '' : 'hidden'}`.trim();
+    }
+
+    function setConnectMessage(text, type) {
+      const msg = el('connect-msg');
+      msg.textContent = text || '';
+      msg.className = `status-line ${type === 'bad' ? 'badge bad' : type === 'ok' ? 'badge ok' : 'muted'}`;
+    }
+
+    function showConnected(connected) {
+      el('connect-panel').classList.toggle('hidden', connected);
+      el('app').classList.toggle('hidden', !connected);
+    }
+
+    async function api(path, options = {}) {
+      const response = await fetch(path, {
+        method: options.method || 'GET',
+        headers: {
+          'X-Bridge-Secret': state.secret,
+          ...(options.body ? { 'Content-Type': 'application/json' } : {})
+        },
+        body: options.body ? JSON.stringify(options.body) : undefined
+      });
+
+      if (response.status === 401) {
+        throw new Error('Wrong bridge secret. Check BRIDGE_SECRET in .env.');
+      }
+
+      const text = await response.text();
+      let data = null;
+      try {
+        data = text ? JSON.parse(text) : null;
+      } catch {
+        data = { ok: false, message: text };
+      }
+
+      if (!response.ok && (!data || typeof data !== 'object')) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      return data;
+    }
+
+    function statusFor(map) {
+      if (map._verify) return map._verify;
+      if (map.mapId) return { cls: 'ok', text: 'ID configured' };
+      if (map.cachedMapId) return { cls: 'warn', text: 'Cached ID' };
+      if (map.geoguessrName) return { cls: 'warn', text: 'Needs search' };
+      return { cls: 'bad', text: 'No search query' };
+    }
+
+    function statsText() {
+      const conflicts = Array.isArray(state.conflicts) ? state.conflicts.length : 0;
+      const missing = state.maps.filter((map) => !map.mapId && !map.cachedMapId && !map.geoguessrName).length;
+      return `Maps: <b>${state.maps.length}</b> &nbsp; Conflicts: <b>${conflicts}</b> &nbsp; Missing search: <b>${missing}</b>`;
+    }
+
+    function renderBanner() {
+      const conflicts = Array.isArray(state.conflicts) ? state.conflicts : [];
+      if (conflicts.length === 0) {
+        setBanner('', '');
+        return;
+      }
+
+      const lines = conflicts.slice(0, 25).map(
+        (conflict) =>
+          `${conflict.alias} -> kept "${conflict.kept}", ignored "${conflict.ignored}"`
+      );
+      setBanner(
+        `Keyword conflicts detected. Change the keywords so each one points to one map.\n\n${lines.join('\n')}` +
+          (conflicts.length > 25 ? `\n... and ${conflicts.length - 25} more.` : ''),
+        'bad'
+      );
+    }
+
+    function applyFilter() {
+      const filter = normalize(state.filter);
+      const rows = [...document.querySelectorAll('#map-body tr.map-row')];
+      for (const row of rows) {
+        const text = row.dataset.filter || '';
+        row.classList.toggle('hidden', Boolean(filter) && !text.includes(filter));
+      }
+
+      for (const resultsRow of document.querySelectorAll('#map-body tr.results-row')) {
+        const index = resultsRow.dataset.index;
+        const mapRow = document.querySelector(`#map-body tr.map-row[data-index="${index}"]`);
+        resultsRow.classList.toggle('hidden', !mapRow || mapRow.classList.contains('hidden'));
+      }
+    }
+
+    function makeCell(content) {
+      const td = document.createElement('td');
+      if (content) td.appendChild(content);
+      return td;
+    }
+
+    function makeInput(field, value, type, className) {
+      const input = document.createElement('input');
+      input.type = type || 'text';
+      input.value = value == null ? '' : value;
+      input.dataset.field = field;
+      if (className) input.className = className;
+      input.spellcheck = false;
+      return input;
+    }
+
+    function render() {
+      el('stats').innerHTML = statsText();
+      renderBanner();
+
+      const body = el('map-body');
+      body.textContent = '';
+
+      state.maps.forEach((map, index) => {
+        const row = document.createElement('tr');
+        row.className = 'map-row';
+        row.dataset.index = String(index);
+        row.dataset.filter = normalize(
+          [map.shorthand, map.geoguessrName, ...(map.aliases || [])].join(' ')
+        );
+
+        const sh = makeInput('shorthand', map.shorthand);
+        sh.className = 'col-sh';
+        row.appendChild(makeCell(sh));
+
+        const alias = makeInput('aliases', (map.aliases || []).join(', '));
+        alias.placeholder = 'comma-separated keywords';
+        row.appendChild(makeCell(alias));
+
+        const name = makeInput('geoguessrName', map.geoguessrName);
+        name.placeholder = 'Exact GeoGuessr map name';
+        row.appendChild(makeCell(name));
+
+        const id = makeInput('mapId', map.mapId);
+        id.placeholder = 'Community ID or official slug';
+        const idWrap = document.createElement('div');
+        idWrap.appendChild(id);
+        if (map.cachedMapId && !map.mapId) {
+          const hint = document.createElement('div');
+          hint.className = 'hint';
+          hint.textContent = `cached: ${map.cachedMapId}`;
+          idWrap.appendChild(hint);
+
+          const useCached = document.createElement('button');
+          useCached.type = 'button';
+          useCached.textContent = 'Use cached';
+          useCached.dataset.action = 'use-cached';
+          useCached.style.marginTop = '5px';
+          idWrap.appendChild(useCached);
+        }
+        row.appendChild(makeCell(idWrap));
+
+        const modeSelect = document.createElement('select');
+        modeSelect.dataset.field = 'defaultMode';
+        for (const [value, label] of [
+          ['', 'Keep current'],
+          ['move', 'Move'],
+          ['nm', 'NM'],
+          ['nmpz', 'NMPZ']
+        ]) {
+          const option = document.createElement('option');
+          option.value = value;
+          option.textContent = label;
+          modeSelect.appendChild(option);
+        }
+        modeSelect.value = map.defaultMode || '';
+        row.appendChild(makeCell(modeSelect));
+
+        const weight = makeInput('weight', map.weight, 'number');
+        row.appendChild(makeCell(weight));
+
+        const status = statusFor(map);
+        const statusStack = document.createElement('div');
+        statusStack.className = 'status-stack';
+        const badge = document.createElement('span');
+        badge.className = `badge ${status.cls}`;
+        badge.textContent = status.text;
+        statusStack.appendChild(badge);
+        if (map._keywords) {
+          const keywordBadge = document.createElement('span');
+          keywordBadge.className = `badge ${map._keywords.ok ? 'ok' : 'bad'}`;
+          keywordBadge.textContent = map._keywords.ok
+            ? 'Keywords OK'
+            : `Keywords: ${map._keywords.bad.length}`;
+          statusStack.appendChild(keywordBadge);
+        }
+        row.appendChild(makeCell(statusStack));
+
+        const actions = document.createElement('div');
+        actions.className = 'actions';
+
+        const searchBtn = document.createElement('button');
+        searchBtn.type = 'button';
+        searchBtn.textContent = 'Search';
+        searchBtn.dataset.action = 'search';
+
+        const verifyBtn = document.createElement('button');
+        verifyBtn.type = 'button';
+        verifyBtn.textContent = 'Verify';
+        verifyBtn.dataset.action = 'verify';
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.type = 'button';
+        deleteBtn.textContent = 'Delete';
+        deleteBtn.className = 'bad';
+        deleteBtn.dataset.action = 'delete';
+
+        actions.appendChild(searchBtn);
+        actions.appendChild(verifyBtn);
+        actions.appendChild(deleteBtn);
+        row.appendChild(makeCell(actions));
+
+        body.appendChild(row);
+      });
+
+      applyFilter();
+    }
+
+    function updateMapFromInput(index, field, value) {
+      const map = state.maps[index];
+      if (!map) return;
+
+      if (field === 'aliases') {
+        map.aliases = value
+          .split(',')
+          .map((entry) => entry.trim())
+          .filter(Boolean);
+      } else if (field === 'weight') {
+        const number = Number(value);
+        map.weight = Number.isFinite(number) && number > 0 ? number : 1;
+      } else if (field === 'defaultMode') {
+        map.defaultMode = value;
+      } else if (field === 'mapId') {
+        map.mapId = value.trim();
+        map._verify = null;
+      } else if (field === 'geoguessrName') {
+        map.geoguessrName = value.trim();
+        map._verify = null;
+      } else if (field === 'shorthand') {
+        map.shorthand = value;
+        map._verify = null;
+      }
+
+      if (field === 'aliases' || field === 'shorthand' || field === 'geoguessrName') {
+        map._keywords = null;
+      }
+
+      const row = document.querySelector(`#map-body tr.map-row[data-index="${index}"]`);
+      if (row) {
+        row.dataset.filter = normalize(
+          [map.shorthand, map.geoguessrName, ...(map.aliases || [])].join(' ')
+        );
+      }
+      el('stats').innerHTML = statsText();
+      applyFilter();
+    }
+
+    async function loadMaps() {
+      try {
+        const data = await api('/maps');
+        if (!data || !data.ok) throw new Error(data?.message || 'Could not load maps.');
+        state.maps = data.maps;
+        state.conflicts = data.conflicts || [];
+        showConnected(true);
+        render();
+        setBanner('', '');
+      } catch (error) {
+        showConnected(false);
+        setConnectMessage(error.message, 'bad');
+      }
+    }
+
+    function connect() {
+      const secret = el('secret-input').value.trim();
+      if (!secret) {
+        setConnectMessage('Paste the BRIDGE_SECRET from .env first.', 'bad');
+        return;
+      }
+      state.secret = secret;
+      localStorage.setItem('ggap_editor_secret', secret);
+      setConnectMessage('Connecting...', 'ok');
+      loadMaps();
+    }
+
+    function forget() {
+      localStorage.removeItem('ggap_editor_secret');
+      state.secret = '';
+      state.maps = [];
+      state.conflicts = [];
+      showConnected(false);
+      setConnectMessage('Secret forgotten.', 'ok');
+    }
+
+    function renderResults(index, results, message) {
+      const existing = document.querySelector(`#map-body tr.results-row[data-index="${index}"]`);
+      if (existing) existing.remove();
+
+      const mapRow = document.querySelector(`#map-body tr.map-row[data-index="${index}"]`);
+      if (!mapRow) return;
+
+      const row = document.createElement('tr');
+      row.className = 'results-row';
+      row.dataset.index = String(index);
+      const td = document.createElement('td');
+      td.colSpan = 8;
+
+      if (!results || results.length === 0) {
+        td.textContent = message || 'No results found.';
+        td.className = 'muted';
+      } else {
+        const list = document.createElement('div');
+        list.className = 'results';
+
+        for (const result of results.slice(0, 20)) {
+          const item = document.createElement('div');
+          item.className = 'result';
+
+          const main = document.createElement('div');
+          main.className = 'result-main';
+          const name = document.createElement('div');
+          name.className = 'result-name';
+          name.textContent = result.name || '(no name)';
+          const meta = document.createElement('div');
+          meta.className = 'result-id';
+          const id = result.slug || result.id || '';
+          meta.textContent = `${id}${result.likes != null ? ` | ${result.likes} likes` : ''}`;
+          main.appendChild(name);
+          main.appendChild(meta);
+
+          const use = document.createElement('button');
+          use.type = 'button';
+          use.className = 'primary';
+          use.textContent = 'Use this';
+          use.addEventListener('click', () => {
+            const map = state.maps[index];
+            map.geoguessrName = result.name || '';
+            map.mapId = id;
+            map._verify = { cls: 'ok', text: 'Selected from search' };
+            render();
+            setBanner(`Set "${map.shorthand}" to "${result.name}".`, 'ok');
+          });
+
+          item.appendChild(main);
+          item.appendChild(use);
+          list.appendChild(item);
+        }
+
+        td.appendChild(list);
+      }
+
+      row.appendChild(td);
+      mapRow.after(row);
+      applyFilter();
+    }
+
+    async function searchMap(index, button) {
+      const map = state.maps[index];
+      const query = (map.geoguessrName || map.shorthand || '').trim();
+      if (!query) {
+        setBanner('Add a search name first, or use the shorthand as the query.', 'bad');
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = 'Searching...';
+      try {
+        const data = await api('/search', { method: 'POST', body: { query } });
+        if (!data || !data.ok) {
+          renderResults(index, [], data?.message || 'Search failed.');
+        } else {
+          renderResults(index, data.results, 'No results found.');
+        }
+      } catch (error) {
+        renderResults(index, [], error.message);
+      } finally {
+        button.disabled = false;
+        button.textContent = 'Search';
+      }
+    }
+
+    function pickExact(query, results) {
+      const q = normalize(query);
+      const list = (Array.isArray(results) ? results : []).filter((item) => item && item.id && item.name);
+      return (
+        list.find((item) => normalize(item.name) === q) ||
+        list.find((item) => normalize(item.name).startsWith(q)) ||
+        null
+      );
+    }
+
+    async function verifyOne(index) {
+      const map = state.maps[index];
+      const id = map.mapId || map.cachedMapId;
+
+      if (id) {
+        try {
+          const data = await api('/maps/verify-ids', {
+            method: 'POST',
+            body: { maps: [{ ...map, mapId: id }] }
+          });
+          const result = data?.results?.[map.shorthand];
+          if (!result) {
+            map._verify = { cls: 'bad', text: 'No result' };
+          } else if (!result.ok) {
+            map._verify = { cls: 'bad', text: result.error || 'Verify failed' };
+          } else if (!map.geoguessrName) {
+            map.geoguessrName = result.actualName;
+            map._verify = { cls: 'ok', text: `OK: ${result.actualName}` };
+          } else {
+            const matches = normalize(result.actualName) === normalize(map.geoguessrName);
+            map._verify = {
+              cls: matches ? 'ok' : 'bad',
+              text: matches ? `OK: ${result.actualName}` : `Wrong map: ${result.actualName}`
+            };
+          }
+        } catch (error) {
+          map._verify = { cls: 'bad', text: error.message };
+        }
+        render();
+        return;
+      }
+
+      if (!map.geoguessrName) {
+        map._verify = { cls: 'bad', text: 'No search query' };
+        render();
+        return;
+      }
+
+      try {
+        const data = await api('/search', { method: 'POST', body: { query: map.geoguessrName } });
+        if (!data || !data.ok) {
+          map._verify = { cls: 'bad', text: data?.message || 'Search failed' };
+        } else {
+          const picked = pickExact(map.geoguessrName, data.results);
+          if (!picked) {
+            map._verify = { cls: 'bad', text: 'No exact match' };
+          } else {
+            map.geoguessrName = picked.name;
+            map.mapId = picked.slug || picked.id;
+            map._verify = { cls: 'ok', text: `Found: ${picked.name}` };
+          }
+        }
+      } catch (error) {
+        map._verify = { cls: 'bad', text: error.message };
+      }
+      render();
+    }
+
+    async function verifyAll() {
+      const button = el('verify-all');
+      button.disabled = true;
+      button.textContent = 'Verifying...';
+
+      try {
+        const withIds = [];
+        const withoutIds = [];
+
+        for (const map of state.maps) {
+          const id = map.mapId || map.cachedMapId;
+          if (id) withIds.push({ ...map, mapId: id });
+          else withoutIds.push(map);
+        }
+
+        setBanner(`Checking ${withIds.length} configured map IDs...`, 'ok');
+        const data = await api('/maps/verify-ids', {
+          method: 'POST',
+          body: { maps: withIds }
+        });
+
+        for (const map of withIds) {
+          const result = data?.results?.[map.shorthand];
+          const target = state.maps.find((entry) => entry.shorthand === map.shorthand);
+          if (!target) continue;
+
+          if (!result) {
+            target._verify = { cls: 'bad', text: 'No result' };
+          } else if (!result.ok) {
+            target._verify = { cls: 'bad', text: result.error || 'Verify failed' };
+          } else if (!target.geoguessrName) {
+            target.geoguessrName = result.actualName;
+            target._verify = { cls: 'ok', text: `OK: ${result.actualName}` };
+          } else {
+            const matches = normalize(result.actualName) === normalize(target.geoguessrName);
+            target._verify = {
+              cls: matches ? 'ok' : 'bad',
+              text: matches ? `OK: ${result.actualName}` : `Wrong map: ${result.actualName}`
+            };
+          }
+        }
+
+        render();
+
+        let searched = 0;
+        let failedSearches = 0;
+
+        for (const target of state.maps) {
+          if (target.mapId || target.cachedMapId) continue;
+          if (!target.geoguessrName) {
+            target._verify = { cls: 'bad', text: 'No search query' };
+            continue;
+          }
+
+          searched += 1;
+          setBanner(
+            `Checked IDs. Searching ${searched}/${withoutIds.length}: ${target.shorthand}...`,
+            'ok'
+          );
+
+          try {
+            const search = await api('/search', {
+              method: 'POST',
+              body: { query: target.geoguessrName }
+            });
+            if (!search || !search.ok) {
+              target._verify = { cls: 'bad', text: search?.message || 'Search failed' };
+              failedSearches += 1;
+              const message = search?.message || '';
+              if (message.includes('not connected') || message.includes('not logged in')) break;
+            } else {
+              const picked = pickExact(target.geoguessrName, search.results);
+              if (!picked) {
+                target._verify = { cls: 'bad', text: 'No exact match' };
+              } else {
+                target.geoguessrName = picked.name;
+                target.mapId = picked.slug || picked.id;
+                target._verify = { cls: 'ok', text: `Found: ${picked.name}` };
+              }
+            }
+          } catch (error) {
+            target._verify = { cls: 'bad', text: error.message };
+            failedSearches += 1;
+          }
+
+          await new Promise((resolve) => setTimeout(resolve, 200));
+        }
+
+        render();
+        setBanner(
+          `Verification finished.` +
+            (failedSearches ? ` ${failedSearches} searches failed.` : '') +
+            ' Review the Status column, then click Save changes.',
+          failedSearches ? 'bad' : 'ok'
+        );
+      } catch (error) {
+        setBanner(error.message, 'bad');
+      } finally {
+        button.disabled = false;
+        button.textContent = 'Verify all';
+      }
+    }
+
+    async function testKeywords() {
+      const button = el('test-keywords');
+      button.disabled = true;
+      button.textContent = 'Testing...';
+
+      try {
+        const maps = state.maps.map((map) => ({
+          shorthand: map.shorthand,
+          geoguessrName: map.geoguessrName,
+          mapId: map.mapId || map.cachedMapId || '',
+          defaultMode: map.defaultMode || '',
+          aliases: map.aliases || [],
+          weight: map.weight,
+          note: map.note || ''
+        }));
+
+        const data = await api('/maps/test-keywords', { method: 'POST', body: { maps } });
+        if (!data || !data.ok) throw new Error(data?.message || 'Keyword test failed.');
+
+        for (const map of state.maps) {
+          const result = data.results?.[map.shorthand];
+          map._keywords = result
+            ? { ok: result.ok, bad: result.bad || [] }
+            : { ok: false, bad: [{ keyword: map.shorthand, message: 'no result' }] };
+        }
+
+        render();
+
+        if (data.summary.mapsWithIssues === 0) {
+          setBanner(`All keywords resolve correctly (${data.summary.maps} maps).`, 'ok');
+        } else {
+          const lines = [];
+          for (const problem of data.problems) {
+            for (const issue of problem.bad) {
+              lines.push(`${problem.map}: "${issue.keyword}" -> ${issue.message}`);
+            }
+          }
+          setBanner(
+            `Keyword issues found (${data.summary.issues}):\n\n${lines.slice(0, 40).join('\n')}` +
+              (lines.length > 40 ? `\n... and ${lines.length - 40} more.` : ''),
+            'bad'
+          );
+        }
+      } catch (error) {
+        setBanner(error.message, 'bad');
+      } finally {
+        button.disabled = false;
+        button.textContent = 'Test keywords';
+      }
+    }
+
+    async function save() {
+      const button = el('save');
+      button.disabled = true;
+      button.textContent = 'Saving...';
+
+      try {
+        const maps = state.maps.map((map) => ({
+          shorthand: map.shorthand,
+          geoguessrName: map.geoguessrName,
+          mapId: map.mapId,
+          defaultMode: map.defaultMode || '',
+          aliases: map.aliases || [],
+          weight: map.weight,
+          note: map.note || ''
+        }));
+
+        const data = await api('/maps/save', { method: 'POST', body: { maps } });
+        if (!data || !data.ok) throw new Error(data?.message || 'Save failed.');
+
+        state.maps = data.maps;
+        state.conflicts = data.conflicts || [];
+        render();
+        setBanner('Saved to config/maps.json.', 'ok');
+      } catch (error) {
+        setBanner(error.message, 'bad');
+      } finally {
+        button.disabled = false;
+        button.textContent = 'Save changes';
+      }
+    }
+
+    function addMap() {
+      const shorthand = prompt('Shorthand for the new map (what you will type):');
+      if (!shorthand) return;
+      const clean = shorthand.trim();
+      if (!clean) return;
+
+      const exists = state.maps.some(
+        (map) => map.shorthand.toLowerCase() === clean.toLowerCase()
+      );
+      if (exists) {
+        alert('That shorthand already exists.');
+        return;
+      }
+
+      state.maps.push({
+        shorthand: clean,
+        geoguessrName: '',
+        mapId: '',
+        cachedMapId: '',
+        effectiveMapId: '',
+        defaultMode: '',
+        aliases: [],
+        weight: 1,
+        note: ''
+      });
+      render();
+      setBanner('Added. Fill in the search name, then click Search or Verify.', 'ok');
+    }
+
+    async function preview() {
+      const text = el('preview-input').value.trim();
+      if (!text) return;
+
+      const target = el('preview-result');
+      target.textContent = 'Checking...';
+
+      try {
+        const maps = state.maps.map((map) => ({
+          shorthand: map.shorthand,
+          geoguessrName: map.geoguessrName,
+          mapId: map.mapId || map.cachedMapId || '',
+          defaultMode: map.defaultMode || '',
+          aliases: map.aliases || [],
+          weight: map.weight,
+          note: map.note || ''
+        }));
+        const data = await api('/maps/preview', {
+          method: 'POST',
+          body: { text, maps }
+        });
+        if (!data || !data.ok) {
+          target.textContent = data?.message || 'Could not preview.';
+          return;
+        }
+        const mapPart = data.map
+          ? `Map: ${data.map.name} (shorthand: ${data.map.key})`
+          : 'Map: unchanged';
+        const modePart = data.mode
+          ? `Mode: ${data.modeLabel}`
+          : 'Mode: unchanged';
+        target.textContent = `${mapPart}\n${modePart}`;
+      } catch (error) {
+        target.textContent = error.message;
+      }
+    }
+
+    el('connect-btn').addEventListener('click', connect);
+    el('secret-input').addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') connect();
+    });
+    el('forget').addEventListener('click', forget);
+    el('open-geoguessr').addEventListener('click', () => {
+      window.open('https://www.geoguessr.com/party', '_blank', 'noopener');
+    });
+    el('reload').addEventListener('click', loadMaps);
+    el('save').addEventListener('click', save);
+    el('add').addEventListener('click', addMap);
+    el('test-keywords').addEventListener('click', testKeywords);
+    el('verify-all').addEventListener('click', verifyAll);
+    el('preview-btn').addEventListener('click', preview);
+    el('preview-input').addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') preview();
+    });
+
+    el('filter').addEventListener('input', (event) => {
+      state.filter = event.target.value;
+      applyFilter();
+    });
+
+    el('map-body').addEventListener('input', (event) => {
+      const input = event.target;
+      if (!input.dataset || !input.dataset.field) return;
+      const row = input.closest('tr.map-row');
+      if (!row) return;
+      updateMapFromInput(Number(row.dataset.index), input.dataset.field, input.value);
+    });
+
+    el('map-body').addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-action]');
+      if (!button) return;
+      const row = button.closest('tr.map-row');
+      if (!row) return;
+      const index = Number(row.dataset.index);
+      const action = button.dataset.action;
+
+      if (action === 'search') searchMap(index, button);
+      if (action === 'verify') verifyOne(index);
+      if (action === 'use-cached') {
+        const map = state.maps[index];
+        if (!map) return;
+        map.mapId = map.cachedMapId;
+        map._verify = { cls: 'ok', text: 'Using cached ID' };
+        render();
+      }
+      if (action === 'delete') {
+        const map = state.maps[index];
+        if (!map) return;
+        if (!confirm(`Delete "${map.shorthand}" from the editor? You still need to click Save changes.`)) return;
+        state.maps.splice(index, 1);
+        render();
+      }
+    });
+
+    (function boot() {
+      const hash = new URLSearchParams(location.hash.slice(1));
+      const hashSecret = hash.get('secret');
+      if (hashSecret) {
+        state.secret = hashSecret;
+        localStorage.setItem('ggap_editor_secret', hashSecret);
+        history.replaceState(null, '', location.pathname + location.search);
+      }
+
+      if (state.secret) {
+        el('secret-input').value = state.secret;
+        loadMaps();
+      } else {
+        showConnected(false);
+        el('secret-input').focus();
+      }
+    })();
+  </script>
+</body>
+</html>

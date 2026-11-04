@@ -1,0 +1,772 @@
+{
+  "savedWheels": [
+    {
+      "title": "GeoGuessr maps",
+      "description": "",
+      "shareMode": "private",
+      "wheelConfigs": [
+        {
+          "afterSpinSound": "applause-sound-soft",
+          "afterSpinSoundVolume": 50,
+          "allowDuplicates": true,
+          "animateWinner": false,
+          "autoRemoveWinner": false,
+          "centerText": "",
+          "colorSettings": [
+            {
+              "color": "#3369E8",
+              "enabled": true
+            },
+            {
+              "color": "#D50F25",
+              "enabled": true
+            },
+            {
+              "color": "#EEB211",
+              "enabled": true
+            },
+            {
+              "color": "#009925",
+              "enabled": true
+            },
+            {
+              "color": "#000000",
+              "enabled": false
+            },
+            {
+              "color": "#000000",
+              "enabled": false
+            }
+          ],
+          "coverImageName": "",
+          "coverImageType": "",
+          "customCoverImageDataUri": "",
+          "customPictureDataUri": "",
+          "customPictureName": "",
+          "description": "",
+          "displayHideButton": true,
+          "displayRemoveButton": true,
+          "displayWinnerDialog": true,
+          "drawOutlines": false,
+          "drawShadow": true,
+          "duringSpinSound": "ticking-sound",
+          "duringSpinSoundVolume": 50,
+          "entries": [
+            {
+              "color": "#3369E8",
+              "weight": 3,
+              "text": "ACW",
+              "enabled": true
+            },
+            {
+              "color": "#D50F25",
+              "weight": 1,
+              "text": "A Pinpointable World",
+              "enabled": true
+            },
+            {
+              "color": "#eeb211",
+              "weight": 3,
+              "text": "AOW",
+              "enabled": true
+            },
+            {
+              "color": "#3369E8",
+              "weight": 1,
+              "text": "A Dirty World",
+              "enabled": true
+            },
+            {
+              "color": "#D50F25",
+              "weight": 1,
+              "text": "A Rural World",
+              "enabled": true
+            },
+            {
+              "color": "#eeb211",
+              "weight": 10,
+              "text": "AARW",
+              "enabled": true
+            },
+            {
+              "color": "#009925",
+              "weight": 1,
+              "text": "AI Degenerated World",
+              "enabled": true
+            },
+            {
+              "color": "#3369E8",
+              "weight": 1,
+              "text": "AI Gen",
+              "enabled": true
+            },
+            {
+              "color": "#D50F25",
+              "weight": 3,
+              "text": "An Arbitrary World",
+              "enabled": true
+            },
+            {
+              "color": "#EEB211",
+              "weight": 3,
+              "text": "An Improved World",
+              "enabled": true
+            },
+            {
+              "color": "#009925",
+              "weight": 1,
+              "text": "An Urban World",
+              "enabled": true
+            },
+            {
+              "color": "#3369E8",
+              "weight": 1,
+              "text": "I saw the sign",
+              "enabled": true
+            },
+            {
+              "color": "#D50F25",
+              "weight": 1,
+              "text": "Indonesia",
+              "enabled": true
+            },
+            {
+              "color": "#EEB211",
+              "weight": 1,
+              "text": "Malaysia",
+              "enabled": true
+            },
+            {
+              "color": "#009925",
+              "weight": 1,
+              "text": "Random country",
+              "enabled": true
+            },
+            {
+              "color": "#D50F25",
+              "weight": 1,
+              "text": "USA",
+              "enabled": true
+            },
+            {
+              "color": "#EEB211",
+              "weight": 1,
+              "text": "World",
+              "enabled": true
+            },
+            {
+              "color": "#009925",
+              "weight": 1,
+              "text": "A Tweaked World",
+              "enabled": true
+            },
+            {
+              "color": "#D50F25",
+              "weight": 3,
+              "text": "A Varied World",
+              "enabled": true
+            },
+            {
+              "color": "#000000",
+              "weight": 1,
+              "text": "A Skewed World",
+              "enabled": true
+            },
+            {
+              "color": "#EEB211",
+              "weight": 3,
+              "text": "A Rainbolt World",
+              "enabled": true
+            },
+            {
+              "weight": 1,
+              "text": "A Curated Planet",
+              "enabled": true
+            },
+            {
+              "weight": 1,
+              "text": "Terminus",
+              "enabled": true
+            },
+            {
+              "text": "Intersectionguessr",
+              "weight": 3,
+              "enabled": true
+            },
+            {
+              "text": "A Pro World",
+              "weight": 3,
+              "enabled": true
+            },
+            {
+              "text": "A zi8gzag world",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "AI Populated World",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "A Random Pan & Zoom World",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "Geodetective World",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "Urban Roulette",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "comp world",
+              "weight": 10,
+              "enabled": true
+            },
+            {
+              "text": "Supersonic",
+              "weight": 3,
+              "enabled": true
+            },
+            {
+              "text": "SIGNS",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "An Extraordinary World",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "An Extraordinary Road",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "Informed World",
+              "weight": 3,
+              "enabled": true
+            },
+            {
+              "text": "50/50 world",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "GeoGuessr in 2069",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "Extreme Regionguessing",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "Less Extreme Regionguessing",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "GeoGuessr Saturday",
+              "weight": 3,
+              "enabled": true
+            },
+            {
+              "text": "GeoTime",
+              "weight": 3,
+              "enabled": true
+            },
+            {
+              "text": "An Extra Informed World",
+              "weight": 3,
+              "enabled": true
+            },
+            {
+              "text": "Yellow Belly",
+              "weight": 3,
+              "enabled": true
+            },
+            {
+              "text": "A Moving World",
+              "weight": 10,
+              "enabled": true
+            },
+            {
+              "text": "A Modified Moving World",
+              "weight": 3,
+              "enabled": true
+            },
+            {
+              "text": "Antibiotic",
+              "weight": 3,
+              "enabled": true
+            },
+            {
+              "text": "An Indoor World",
+              "weight": 1,
+              "enabled": true
+            }
+          ],
+          "galleryPicture": "/images/none.png",
+          "hubSize": "S",
+          "isAdvanced": true,
+          "launchConfetti": true,
+          "maxNames": 1000,
+          "pageBackgroundColor": "#FFFFFF",
+          "pictureType": "none",
+          "playClickWhenWinnerRemoved": false,
+          "showTitle": true,
+          "slowSpin": false,
+          "spinTime": 1,
+          "title": "GeoGuessr maps",
+          "type": "color",
+          "winnerMessage": "We have a winner!",
+          "pointerChangesColor": false,
+          "pageGradient": false,
+          "font": "",
+          "hideEntryText": "never"
+        }
+      ],
+      "path": "fth-e29",
+      "created": 1793798240469,
+      "lastWrite": 1793798240469,
+      "readCount": 0
+    },
+    {
+      "title": "Geoguessr Settings",
+      "description": "",
+      "shareMode": "private",
+      "wheelConfigs": [
+        {
+          "afterSpinSound": "applause-sound-soft",
+          "afterSpinSoundVolume": 50,
+          "allowDuplicates": true,
+          "animateWinner": false,
+          "autoRemoveWinner": false,
+          "centerText": "",
+          "colorSettings": [
+            {
+              "color": "#3369E8",
+              "enabled": true
+            },
+            {
+              "color": "#D50F25",
+              "enabled": true
+            },
+            {
+              "color": "#EEB211",
+              "enabled": true
+            },
+            {
+              "color": "#009925",
+              "enabled": true
+            },
+            {
+              "color": "#000000",
+              "enabled": false
+            },
+            {
+              "color": "#000000",
+              "enabled": false
+            }
+          ],
+          "coverImageName": "",
+          "coverImageType": "",
+          "customCoverImageDataUri": "",
+          "customPictureDataUri": "",
+          "customPictureName": "",
+          "description": "",
+          "displayHideButton": true,
+          "displayRemoveButton": true,
+          "displayWinnerDialog": true,
+          "drawOutlines": false,
+          "drawShadow": true,
+          "duringSpinSound": "ticking-sound",
+          "duringSpinSoundVolume": 50,
+          "entries": [
+            {
+              "text": "Move",
+              "weight": 2,
+              "enabled": true
+            },
+            {
+              "text": "NM",
+              "weight": 2,
+              "enabled": true
+            },
+            {
+              "text": "NMPZ",
+              "weight": 1,
+              "enabled": true
+            }
+          ],
+          "galleryPicture": "/images/none.png",
+          "hubSize": "S",
+          "isAdvanced": true,
+          "launchConfetti": true,
+          "maxNames": 1000,
+          "pageBackgroundColor": "#FFFFFF",
+          "pictureType": "none",
+          "playClickWhenWinnerRemoved": false,
+          "showTitle": true,
+          "slowSpin": false,
+          "spinTime": 10,
+          "title": "Geoguessr Settings",
+          "type": "color",
+          "winnerMessage": "",
+          "pointerChangesColor": false,
+          "pageGradient": false,
+          "font": "",
+          "hideEntryText": "never"
+        }
+      ],
+      "path": "bgf-gsn",
+      "created": 1746224348353,
+      "lastWrite": 1746224348353,
+      "readCount": 0
+    }
+  ],
+  "sharedWheels": [
+    {
+      "title": "GeoGuessr maps",
+      "description": "",
+      "shareMode": "copyable",
+      "wheelConfigs": [
+        {
+          "afterSpinSound": "applause-sound-soft",
+          "afterSpinSoundVolume": 50,
+          "allowDuplicates": true,
+          "animateWinner": false,
+          "autoRemoveWinner": false,
+          "centerText": "",
+          "colorSettings": [
+            {
+              "color": "#3369E8",
+              "enabled": true
+            },
+            {
+              "color": "#D50F25",
+              "enabled": true
+            },
+            {
+              "color": "#EEB211",
+              "enabled": true
+            },
+            {
+              "color": "#009925",
+              "enabled": true
+            },
+            {
+              "color": "#000000",
+              "enabled": false
+            },
+            {
+              "color": "#000000",
+              "enabled": false
+            }
+          ],
+          "coverImageName": "",
+          "coverImageType": "",
+          "customCoverImageDataUri": "",
+          "customPictureDataUri": "",
+          "customPictureName": "",
+          "description": "",
+          "displayHideButton": true,
+          "displayRemoveButton": true,
+          "displayWinnerDialog": true,
+          "drawOutlines": false,
+          "drawShadow": true,
+          "duringSpinSound": "ticking-sound",
+          "duringSpinSoundVolume": 50,
+          "entries": [
+            {
+              "color": "#3369E8",
+              "weight": 3,
+              "text": "ACW",
+              "enabled": true
+            },
+            {
+              "color": "#D50F25",
+              "weight": 1,
+              "text": "A Pinpointable World",
+              "enabled": true
+            },
+            {
+              "color": "#eeb211",
+              "weight": 3,
+              "text": "AOW",
+              "enabled": true
+            },
+            {
+              "color": "#3369E8",
+              "weight": 1,
+              "text": "A Dirty World",
+              "enabled": true
+            },
+            {
+              "color": "#D50F25",
+              "weight": 1,
+              "text": "A Rural World",
+              "enabled": true
+            },
+            {
+              "color": "#eeb211",
+              "weight": 3,
+              "text": "AARW",
+              "enabled": true
+            },
+            {
+              "color": "#009925",
+              "weight": 1,
+              "text": "AI Degenerated World",
+              "enabled": true
+            },
+            {
+              "color": "#3369E8",
+              "weight": 1,
+              "text": "AI Gen",
+              "enabled": true
+            },
+            {
+              "color": "#D50F25",
+              "weight": 3,
+              "text": "An Arbitrary World",
+              "enabled": true
+            },
+            {
+              "color": "#EEB211",
+              "weight": 3,
+              "text": "An Improved World",
+              "enabled": true
+            },
+            {
+              "color": "#009925",
+              "weight": 1,
+              "text": "An Urban World",
+              "enabled": true
+            },
+            {
+              "color": "#3369E8",
+              "weight": 1,
+              "text": "I saw the sign",
+              "enabled": true
+            },
+            {
+              "color": "#D50F25",
+              "weight": 1,
+              "text": "Indonesia",
+              "enabled": true
+            },
+            {
+              "color": "#EEB211",
+              "weight": 1,
+              "text": "Malaysia",
+              "enabled": true
+            },
+            {
+              "color": "#009925",
+              "weight": 1,
+              "text": "Random country",
+              "enabled": true
+            },
+            {
+              "color": "#D50F25",
+              "weight": 1,
+              "text": "USA",
+              "enabled": true
+            },
+            {
+              "color": "#EEB211",
+              "weight": 1,
+              "text": "World",
+              "enabled": true
+            },
+            {
+              "color": "#009925",
+              "weight": 1,
+              "text": "A Tweaked World",
+              "enabled": true
+            },
+            {
+              "color": "#D50F25",
+              "weight": 3,
+              "text": "A Varied World",
+              "enabled": true
+            },
+            {
+              "color": "#000000",
+              "weight": 1,
+              "text": "A Skewed World",
+              "enabled": true
+            },
+            {
+              "color": "#EEB211",
+              "weight": 3,
+              "text": "A Rainbolt World",
+              "enabled": true
+            },
+            {
+              "weight": 1,
+              "text": "A Curated Planet",
+              "enabled": true
+            },
+            {
+              "weight": 1,
+              "text": "Terminus",
+              "enabled": true
+            },
+            {
+              "text": "Intersectionguessr",
+              "weight": 3,
+              "enabled": true
+            },
+            {
+              "text": "A Pro World",
+              "weight": 3,
+              "enabled": true
+            },
+            {
+              "text": "A zi8gzag world",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "AI Populated World",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "A Random Pan & Zoom World",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "Geodetective World",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "Urban Roulette",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "comp world",
+              "weight": 3,
+              "enabled": true
+            },
+            {
+              "text": "Supersonic",
+              "weight": 3,
+              "enabled": true
+            },
+            {
+              "text": "SIGNS",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "An Extraordinary World",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "An Extraordinary Road",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "Informed World",
+              "weight": 3,
+              "enabled": true
+            },
+            {
+              "text": "50/50 world",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "GeoGuessr in 2069",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "Extreme Regionguessing",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "Less Extreme Regionguessing",
+              "weight": 1,
+              "enabled": true
+            },
+            {
+              "text": "GeoGuessr Saturday",
+              "weight": 10,
+              "enabled": true
+            },
+            {
+              "text": "GeoTime",
+              "weight": 3,
+              "enabled": true
+            },
+            {
+              "text": "An Extra Informed World",
+              "weight": 3,
+              "enabled": true
+            },
+            {
+              "text": "Yellow Belly",
+              "weight": 3,
+              "enabled": true
+            },
+            {
+              "text": "A Moving World",
+              "weight": 3,
+              "enabled": true
+            },
+            {
+              "text": "A Modified Moving World",
+              "weight": 10,
+              "enabled": true
+            },
+            {
+              "text": "Antibiotic",
+              "weight": 10,
+              "enabled": true
+            }
+          ],
+          "galleryPicture": "/images/none.png",
+          "hubSize": "S",
+          "isAdvanced": true,
+          "launchConfetti": true,
+          "maxNames": 1000,
+          "pageBackgroundColor": "#FFFFFF",
+          "pictureType": "none",
+          "playClickWhenWinnerRemoved": false,
+          "showTitle": true,
+          "slowSpin": false,
+          "spinTime": 1,
+          "title": "GeoGuessr maps",
+          "type": "color",
+          "winnerMessage": "We have a winner!",
+          "pointerChangesColor": false,
+          "pageGradient": false,
+          "font": "",
+          "hideEntryText": "never"
+        }
+      ],
+      "path": "md7-mm9",
+      "created": 1793621655460,
+      "lastWrite": 1793621655460,
+      "readCount": 0
+    }
+  ]
+}

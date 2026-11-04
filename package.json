@@ -1,0 +1,21 @@
+{
+  "name": "geoguessr-party-autopick",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Apply GeoGuessr party map + movement settings from a Discord message.",
+  "main": "src/discord.js",
+  "scripts": {
+    "setup": "node setup.js",
+    "register": "node src/register.js",
+    "start": "node src/discord.js",
+    "verify-maps": "node scripts/verify-maps.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.7"
+  }
+}
