@@ -33,6 +33,42 @@ async function request(port, path, options = {}) {
   return { status: response.status, body };
 }
 
+const TEST_MAPS = [
+  {
+    shorthand: 'comp',
+    geoguessrName: 'A Competitive World',
+    mapId: 'comp-id',
+    defaultMode: '',
+    aliases: ['comp'],
+    weight: 10
+  },
+  {
+    shorthand: 'ASW',
+    geoguessrName: 'A Skewed World',
+    mapId: 'asw-id',
+    defaultMode: 'nmpz',
+    aliases: ['skewed'],
+    weight: 1
+  },
+  {
+    shorthand: 'AMW',
+    geoguessrName: 'A Moving World',
+    mapId: 'amw-id',
+    defaultMode: 'move',
+    aliases: ['amw'],
+    weight: 10
+  }
+];
+
+function makeTestBridge(cache = {}) {
+  return new Bridge({
+    maps: TEST_MAPS,
+    cache,
+    bridgeSecret: 'test-secret',
+    bridgePort: 8787
+  });
+}
+
 test('bridge delivers a command and receives the result', async () => {
   const bridge = new Bridge(loadConfig());
   const server = bridge.start();
@@ -193,7 +229,7 @@ test('bridge explains that map search needs the userscript', async () => {
   }
 });
 
-test('bridge reports an unknown map without changing state', async () => {
+test('bridge creates a search-backed job for an unknown map', async () => {
   const bridge = new Bridge(loadConfig());
   const server = bridge.start();
   if (!server.listening) await once(server, 'listening');
@@ -206,9 +242,10 @@ test('bridge reports an unknown map without changing state', async () => {
       body: JSON.stringify({ text: 'not a real map xyz', deliver: false })
     });
 
-    assert.equal(command.status, 422);
-    assert.equal(command.body.ok, false);
-    assert.match(command.body.message, /Unknown map/);
+    assert.equal(command.status, 200);
+    assert.equal(command.body.ok, true);
+    assert.equal(command.body.job.map.dynamic, true);
+    assert.equal(command.body.job.map.key, '@search:not a real map xyz');
   } finally {
     bridge.stop();
   }
@@ -256,4 +293,106 @@ test('an explicit mode overrides the map default mode', () => {
   assert.equal(created.ok, true);
   assert.equal(created.job.mode, 'nm');
   assert.equal(created.job.modeLabel, 'NM');
+});
+
+test('Random NM is mode-only and remembers NM', () => {
+  const bridge = makeTestBridge();
+  const result = bridge.createJob('Random NM');
+
+  assert.equal(result.ok, true);
+  assert.equal(result.job.map, null);
+  assert.equal(result.job.mode, 'nm');
+  assert.equal(result.job.modeSource, 'explicit');
+  assert.equal(result.job.ignoredRandom, true);
+  assert.equal(bridge.lastMode, 'nm');
+});
+
+test('Random Move and Random NMPZ only change the mode', () => {
+  const bridge = makeTestBridge();
+
+  for (const [text, mode] of [
+    ['Random Move', 'move'],
+    ['Random NMPZ', 'nmpz']
+  ]) {
+    const result = bridge.createJob(text);
+    assert.equal(result.ok, true);
+    assert.equal(result.job.map, null);
+    assert.equal(result.job.mode, mode);
+    assert.equal(result.job.ignoredRandom, true);
+  }
+});
+
+test('a country message reuses the remembered mode', () => {
+  const bridge = makeTestBridge();
+  bridge.createJob('Random NMPZ');
+
+  const result = bridge.createJob('Portugal');
+
+  assert.equal(result.ok, true);
+  assert.equal(result.job.map.key, '@search:portugal');
+  assert.equal(result.job.map.name, 'portugal');
+  assert.equal(result.job.map.mapId, '');
+  assert.equal(result.job.map.dynamic, true);
+  assert.equal(result.job.mode, 'nmpz');
+  assert.equal(result.job.modeSource, 'remembered');
+});
+
+test('a cached country ID is reused', () => {
+  const bridge = makeTestBridge({ '@search:portugal': 'portugal-id' });
+  const result = bridge.createJob('Portugal');
+
+  assert.equal(result.ok, true);
+  assert.equal(result.job.map.key, '@search:portugal');
+  assert.equal(result.job.map.mapId, 'portugal-id');
+});
+
+test('map default mode wins over the remembered mode', () => {
+  const bridge = makeTestBridge();
+  bridge.createJob('Random NM');
+
+  const result = bridge.createJob('ASW');
+
+  assert.equal(result.job.mode, 'nmpz');
+  assert.equal(result.job.modeSource, 'default');
+});
+
+test('an explicit mode in the country message wins', () => {
+  const bridge = makeTestBridge();
+  bridge.createJob('Random NM');
+
+  const result = bridge.createJob('Portugal move');
+
+  assert.equal(result.job.map.key, '@search:portugal');
+  assert.equal(result.job.mode, 'move');
+  assert.equal(result.job.modeSource, 'explicit');
+});
+
+test('config map-only messages reuse the remembered mode', () => {
+  const bridge = makeTestBridge();
+  bridge.createJob('comp NM');
+
+  const result = bridge.createJob('comp');
+
+  assert.equal(result.job.map.key, 'comp');
+  assert.equal(result.job.mode, 'nm');
+  assert.equal(result.job.modeSource, 'remembered');
+});
+
+test('an unknown map with no remembered mode stays map-only', () => {
+  const bridge = makeTestBridge();
+  const result = bridge.createJob('Portugal');
+
+  assert.equal(result.ok, true);
+  assert.equal(result.job.map.dynamic, true);
+  assert.equal(result.job.mode, null);
+  assert.equal(result.job.modeSource, null);
+});
+
+test('bare random still picks a configured weighted random map', () => {
+  const bridge = makeTestBridge();
+  const result = bridge.createJob('random');
+
+  assert.equal(result.ok, true);
+  assert.ok(result.job.map);
+  assert.ok(TEST_MAPS.some((map) => map.shorthand === result.job.map.key));
 });

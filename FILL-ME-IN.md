@@ -21,7 +21,7 @@ The wizard also asks for the full GeoGuessr name of any map that still needs one
 
 The easiest way is the **Map Editor**:
 
-1. Run `start.bat`.
+1. Make sure the bridge is running (or run `start.bat` manually).
 2. Open `http://127.0.0.1:8787/editor`.
 3. Paste the bridge secret when asked.
 4. For each map, check the **keywords** and the **search name**. Click **Search** to search GeoGuessr, then **Use this** on the correct result.
@@ -77,10 +77,12 @@ This already exists, so `comp NM` works out of the box.
 Then:
 
 1. Install `userscript/geoguessr-party-autopick.user.js` in Tampermonkey.
-2. Run `start.bat`.
+2. Double-click `install-autostart.bat` once, so the bridge starts at every login.
 3. Open `https://www.geoguessr.com/party/lobby/...`.
 4. Click the **GG Autopick** pill in the bottom-right and paste the bridge secret from step 1.
 5. Right-click any message in your friend's DM -> **Apps** -> **Apply to GeoGuessr**.
+
+Use `autostart-status.bat` to check it, or `uninstall-autostart.bat` to stop it. Logs are in `logs/bridge.log`.
 
 ## How to know the maps are understood
 
@@ -118,9 +120,20 @@ Examples:
 - `NM` (keeps the current map)
 - `aarw move`
 - `world nmpz`
-- `random NM` (weighted random map from your wheel)
+- `random NM` (map unchanged; NM remembered for the next message)
+- `Portugal` (after `random NM`; searches GeoGuessr and reuses NM)
+- `random` (weighted random map from your wheel)
 
 Modes: `move`, `nm`, `nmpz`.
+
+### Random mode + country
+
+1. Friend sends `Random NM` (or `Random Move` / `Random NMPZ`).
+2. Right-click it -> **Apps -> Apply to GeoGuessr**. The map stays unchanged.
+3. Friend sends a country, for example `Portugal`.
+4. Right-click it. The bridge searches GeoGuessr, applies Portugal, and reuses the remembered mode.
+
+Right-click both messages separately. The remembered mode lasts until another mode is set or the bridge restarts.
 
 If a map has a **default mode**, a map-only message uses it. For example:
 
@@ -132,8 +145,9 @@ An explicit mode still overrides: `AMW NM` applies NM. Set default modes in the 
 
 ## If something is wrong
 
-- **"GeoGuessr tab is not connected"** -> `start.bat` is not running, or the userscript has the wrong secret.
+- **"GeoGuessr tab is not connected"** -> run `autostart-status.bat`; if the bridge is not running, run `install-autostart.bat` or `start.bat`. Check the userscript secret.
 - **"You are not the party host"** -> only the host can change the map.
 - **Map not found** -> put the exact GeoGuessr map name in `geoguessrName`, or the map ID in `mapId`.
 - **Chrome blocks localhost** -> click the lock icon next to geoguessr.com -> Site settings -> Local network access -> Allow, then reload.
-- **After editing `config/maps.json`** -> click **Reload bridge config** in the overlay, or restart `start.bat`.
+- **After editing `config/maps.json`** -> click **Reload bridge config** in the overlay, or restart the bridge through `autostart-status.bat` / `start.bat`.
+- **Need to see crashes** -> open `logs/bridge.log`.

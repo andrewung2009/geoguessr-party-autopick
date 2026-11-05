@@ -19,8 +19,13 @@ function formatResult(result) {
     return `Could not apply: ${result?.message || 'Unknown error.'}`;
   }
 
-  const mapPart = result.mapName ? `Map: ${result.mapName}` : 'Map: unchanged';
-  const modePart = result.modeLabel ? `Mode: ${result.modeLabel}` : 'Mode: unchanged';
+  let mapPart = result.mapName ? `Map: ${result.mapName}` : 'Map: unchanged';
+  if (!result.mapName && result.ignoredRandom) mapPart = 'Map: unchanged (random ignored)';
+
+  let modePart = result.modeLabel ? `Mode: ${result.modeLabel}` : 'Mode: unchanged';
+  if (result.modeLabel && result.modeSource === 'remembered') {
+    modePart += ' (remembered)';
+  }
 
   return [
     'Applied.',

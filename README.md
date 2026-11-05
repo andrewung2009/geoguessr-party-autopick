@@ -10,11 +10,24 @@ Example: your friend sends `comp NM` in a Discord DM. You right-click that messa
 2. Edit `config/maps.json` if the wizard left any `geoguessrName` blank.
 3. Double-click `register.bat` and open the install link it prints. Enable **User Install** in the Discord Developer Portal first.
 4. Install `userscript/geoguessr-party-autopick.user.js` in Tampermonkey.
-5. Double-click `start.bat`.
+5. Double-click `install-autostart.bat` once. The bridge now starts automatically when you log in to Windows.
 6. Open a GeoGuessr party lobby, click **GG Autopick**, and paste the bridge secret from `.env`.
 7. Right-click a message in the Discord DM -> **Apps** -> **Apply to GeoGuessr**.
 
+You can still double-click `start.bat` when you want to watch the console manually.
+
 See `FILL-ME-IN.md` for the checklist with screenshots-in-words.
+
+## Auto-start on Windows
+
+Run `install-autostart.bat` once. It creates a Task Scheduler task that starts the bridge at login, hidden, and restarts it if it crashes. No admin rights are required.
+
+- `autostart-status.bat` shows whether the task and bridge are running.
+- `uninstall-autostart.bat` removes the task.
+- Logs are written to `logs/bridge.log`.
+- If Task Scheduler is blocked on your PC, the installer prints a Startup-folder fallback.
+
+The GeoGuessr tab still has to be open for commands to reach the userscript.
 
 ## Why the right-click step?
 
@@ -67,7 +80,9 @@ These are GeoGuessr's internal web endpoints. They can change without notice. Th
 | `NM` | movement only, map unchanged |
 | `aarw move` | An Arbitrary Rural World + Move |
 | `world nmpz` | World + NMPZ |
-| `random NM` | weighted random map from your wheel + No Move |
+| `random NM` | map unchanged; NM applied and remembered |
+| `Portugal` (after `random NM`) | Portugal searched on GeoGuessr + remembered NM |
+| `random` | weighted random map from your wheel |
 
 Modes:
 
@@ -76,6 +91,19 @@ Modes:
 - `nmpz` -> no moving, no panning, no zooming
 
 If a single token is a mode word, it is treated as movement-only.
+
+### Random mode + country
+
+When a command starts with `random` and includes a mode, the word `random` is ignored. Only the mode is applied and remembered:
+
+1. Friend sends `Random NM` (or `Random Move` / `Random NMPZ`).
+2. Right-click that message -> **Apps** -> **Apply to GeoGuessr**. The map stays unchanged.
+3. Friend sends any country, for example `Portugal`.
+4. Right-click that message. The bridge searches GeoGuessr for `Portugal`, applies it, and reuses the remembered mode.
+
+Right-click both messages separately. A Discord app cannot read earlier DM messages on its own.
+
+The remembered mode stays active until another mode is set or the bridge restarts. Map-only messages use this order: explicit mode in that message, then the map's default mode, then the remembered mode. Resolved country IDs are cached in `config/map-cache.json`.
 
 ### Default mode
 
@@ -129,7 +157,12 @@ editor/editor.html               <- browser Map Editor
 userscript/geoguessr-party-autopick.user.js
 setup.js                         <- interactive setup wizard
 setup.bat / register.bat / start.bat
+scripts/run-bridge.cmd           <- auto-start supervisor
+scripts/start-hidden.vbs         <- hidden launcher
+scripts/autostart.ps1            <- Task Scheduler install/remove/status
+install-autostart.bat / uninstall-autostart.bat / autostart-status.bat
 test/parser.test.js
+test/bridge.test.js
 ```
 
 ## Map Editor
@@ -198,6 +231,8 @@ In the overlay:
 
 You can test the whole bridge without Discord:
 
+Stop the auto-start task first if it is running (`uninstall-autostart.bat`), otherwise the port is already in use.
+
 ```powershell
 # 1. Start the bridge
 npm start
@@ -225,14 +260,16 @@ Or use the input box in the **GG Autopick** overlay; it does not require Discord
 | Symptom | Fix |
 |---|---|
 | `BRIDGE_SECRET is missing` | Run `setup.bat`. |
+| Port 8787 already in use | Another bridge copy is running. Run `autostart-status.bat`, or stop the other terminal. |
 | `DISCORD_TOKEN is missing` | Run `setup.bat` and paste the bot token. |
 | Command not in Discord Apps menu | Run `register.bat`, make sure **User Install** is enabled, and restart Discord. Global commands can take a few minutes to appear. |
-| `GeoGuessr tab is not connected` | Run `start.bat`; check the overlay secret matches `.env`. |
+| `GeoGuessr tab is not connected` | Run `autostart-status.bat`; if it is not running, run `install-autostart.bat` or `start.bat`. Check the overlay secret matches `.env`. |
 | `You are not the party host` | Only the party host can change settings. |
 | `Could not find "..."` | Put the exact GeoGuessr name in `geoguessrName`, or the map ID in `mapId`. |
 | Chrome blocks localhost | Site settings for geoguessr.com -> Local network access -> Allow, then reload. |
 | Wrong map chosen by search | Add the correct `mapId` to `config/maps.json` and clear the cache. |
-| Changed `maps.json` but nothing changed | Click **Reload bridge config**, or restart `start.bat`. |
+| Changed `maps.json` but nothing changed | Click **Reload bridge config**, or restart the bridge (`uninstall-autostart.bat`, then `install-autostart.bat`, or use `start.bat`). |
+| Need to see why the bot is crashing | Open `logs/bridge.log`. |
 
 ## License
 

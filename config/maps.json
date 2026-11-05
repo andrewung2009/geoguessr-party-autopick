@@ -308,8 +308,8 @@
     },
     {
       "shorthand": "geod",
-      "geoguessrName": "Geodetective World",
-      "mapId": "",
+      "geoguessrName": "GeoDetective World 🌎",
+      "mapId": "61c1d9be6f87f70001eb6055",
       "defaultMode": "",
       "aliases": [
         "geodetective",
@@ -320,7 +320,7 @@
     {
       "shorthand": "UR",
       "geoguessrName": "Urban Roulette",
-      "mapId": "",
+      "mapId": "674453762e55e7ece12b3300",
       "defaultMode": "",
       "aliases": [
         "roulette",
@@ -342,7 +342,7 @@
     {
       "shorthand": "Supersonic",
       "geoguessrName": "Supersonic",
-      "mapId": "",
+      "mapId": "67101e71077612dd6ac8de79",
       "defaultMode": "",
       "aliases": [
         "supersonic"
@@ -351,8 +351,8 @@
     },
     {
       "shorthand": "SIGNS",
-      "geoguessrName": "SIGNS",
-      "mapId": "",
+      "geoguessrName": "Signs",
+      "mapId": "64a3e94dca7a53bf2d0fcf06",
       "defaultMode": "",
       "aliases": [
         "signs"
@@ -373,7 +373,7 @@
     {
       "shorthand": "AER",
       "geoguessrName": "An Extraordinary Road",
-      "mapId": "",
+      "mapId": "6650bf3f10696353ac358f9b",
       "defaultMode": "",
       "aliases": [
         "extraordinary road"
@@ -438,8 +438,8 @@
     },
     {
       "shorthand": "GS",
-      "geoguessrName": "GeoGuessr Saturday",
-      "mapId": "",
+      "geoguessrName": "Geoguessr Saturday",
+      "mapId": "661ecb894e20c3a560ef26eb",
       "defaultMode": "",
       "aliases": [
         "saturday",
@@ -460,7 +460,7 @@
     {
       "shorthand": "AEIW",
       "geoguessrName": "An Extra Informed World",
-      "mapId": "",
+      "mapId": "6782d7f16a0a261e8f6dad60",
       "defaultMode": "",
       "aliases": [
         "extra informed",
@@ -469,9 +469,9 @@
       "weight": 3
     },
     {
-      "shorthand": "Yellow Belly",
+      "shorthand": "YB",
       "geoguessrName": "Yellow Belly",
-      "mapId": "",
+      "mapId": "681ab5c4e47c07651a02582b",
       "defaultMode": "",
       "aliases": [
         "yellow belly",
@@ -493,7 +493,7 @@
     {
       "shorthand": "AMMW",
       "geoguessrName": "A Modified Moving World",
-      "mapId": "",
+      "mapId": "698ef135b77fb917bcdf8425",
       "defaultMode": "move",
       "aliases": [
         "ammw",
@@ -505,7 +505,7 @@
     {
       "shorthand": "anti",
       "geoguessrName": "Antibiotic",
-      "mapId": "",
+      "mapId": "68bea2cfd3027b2016ce4f74",
       "defaultMode": "",
       "aliases": [
         "antibiotic"
@@ -515,7 +515,7 @@
     {
       "shorthand": "indoor",
       "geoguessrName": "An Indoor World",
-      "mapId": "",
+      "mapId": "67756e6c8d7eb43c58faeebe",
       "defaultMode": "",
       "aliases": [
         "indoor",

@@ -9,6 +9,9 @@
     "register": "node src/register.js",
     "start": "node src/discord.js",
     "verify-maps": "node scripts/verify-maps.js",
+    "autostart": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/autostart.ps1 install",
+    "autostart:remove": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/autostart.ps1 remove",
+    "autostart:status": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/autostart.ps1 status",
     "test": "node --test"
   },
   "engines": {

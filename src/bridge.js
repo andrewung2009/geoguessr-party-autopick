@@ -24,6 +24,16 @@ const {
 const POLL_TIMEOUT_MS = 25000;
 const CLIENT_STALE_MS = 30000;
 const EDITOR_PATH = nodePath.join(__dirname, '..', 'editor', 'editor.html');
+const RANDOM_QUERIES = new Set(['random', 'random map', 'spin']);
+const DYNAMIC_CACHE_PREFIX = '@search:';
+
+function isRandomQuery(query) {
+  return RANDOM_QUERIES.has(normalize(query));
+}
+
+function dynamicCacheKey(query) {
+  return `${DYNAMIC_CACHE_PREFIX}${normalize(query)}`;
+}
 
 class Bridge {
   constructor(config) {
@@ -34,6 +44,7 @@ class Bridge {
     this.pending = new Map();
     this.lastClientPoll = 0;
     this.lastDeliveredAt = 0;
+    this.lastMode = null;
     this.server = null;
     this.startedAt = Date.now();
   }
@@ -54,12 +65,16 @@ class Bridge {
 
     let map = null;
     let mode = parsed.mode;
+    let modeSource = parsed.mode ? 'explicit' : null;
+    let ignoredRandom = false;
 
     if (parsed.mapQuery) {
-      const isRandom = ['random', 'random map', 'spin'].includes(parsed.mapQuery);
+      const isRandom = isRandomQuery(parsed.mapQuery);
       let found = null;
 
-      if (isRandom) {
+      if (isRandom && parsed.mode) {
+        ignoredRandom = true;
+      } else if (isRandom) {
         const pool = this.config.maps.filter(
           (entry) => entry.geoguessrName || entry.mapId || this.config.cache[entry.shorthand]
         );
@@ -76,31 +91,46 @@ class Bridge {
             message: `"${parsed.mapQuery}" is ambiguous. Try one of: ${names}`
           };
         }
-        if (!resolved.map) {
-          return {
-            ok: false,
-            message: `Unknown map "${parsed.mapQuery}". Add it to config/maps.json.`
+        if (resolved.map) {
+          found = resolved.map;
+        } else {
+          const key = dynamicCacheKey(parsed.mapQuery);
+          map = {
+            key,
+            shorthand: parsed.mapQuery,
+            name: parsed.mapQuery,
+            mapId: this.config.cache[key] || '',
+            dynamic: true
           };
         }
-        found = resolved.map;
       }
 
-      const mapId = found.mapId || this.config.cache[found.shorthand] || '';
-      if (!mapId && !found.geoguessrName) {
-        return {
-          ok: false,
-          message: `Map "${found.shorthand}" needs a geoguessrName or mapId in config/maps.json.`
+      if (found) {
+        const mapId = found.mapId || this.config.cache[found.shorthand] || '';
+        if (!mapId && !found.geoguessrName) {
+          return {
+            ok: false,
+            message: `Map "${found.shorthand}" needs a geoguessrName or mapId in config/maps.json.`
+          };
+        }
+
+        map = {
+          key: found.shorthand,
+          shorthand: found.shorthand,
+          name: found.geoguessrName || found.shorthand,
+          mapId
         };
+
+        if (!mode && found.defaultMode) {
+          mode = found.defaultMode;
+          modeSource = 'default';
+        }
       }
+    }
 
-      map = {
-        key: found.shorthand,
-        shorthand: found.shorthand,
-        name: found.geoguessrName || found.shorthand,
-        mapId
-      };
-
-      if (!mode && found.defaultMode) mode = found.defaultMode;
+    if (!mode && this.lastMode) {
+      mode = this.lastMode;
+      modeSource = 'remembered';
     }
 
     if (!map && !mode) {
@@ -108,6 +138,10 @@ class Bridge {
         ok: false,
         message: `Could not understand "${text}". Try something like "comp NM".`
       };
+    }
+
+    if (modeSource === 'explicit') {
+      this.lastMode = mode;
     }
 
     return {
@@ -118,6 +152,8 @@ class Bridge {
         map,
         mode,
         modeLabel: modeLabel(mode),
+        modeSource,
+        ignoredRandom,
         createdAt: Date.now()
       }
     };
@@ -376,16 +412,18 @@ class Bridge {
       }
     }
 
+    const entry = this.pending.get(payload.id);
     const result = {
       ok: Boolean(payload.ok),
       message: String(payload.message || (payload.ok ? 'Applied.' : 'Failed.')),
       mapName: payload.mapName || null,
       mapId: payload.mapId || null,
       mode: payload.mode || null,
-      modeLabel: payload.mode ? modeLabel(payload.mode) : null
+      modeLabel: payload.mode ? modeLabel(payload.mode) : null,
+      modeSource: entry?.job?.modeSource || null,
+      ignoredRandom: Boolean(entry?.job?.ignoredRandom)
     };
 
-    const entry = this.pending.get(payload.id);
     if (entry) {
       clearTimeout(entry.timer);
       this.pending.delete(payload.id);
@@ -403,6 +441,7 @@ class Bridge {
       clientConnected: this.hasRecentClient(),
       lastClientPoll: this.lastClientPoll || null,
       lastDeliveredAt: this.lastDeliveredAt || null,
+      rememberedMode: this.lastMode,
       queueLength: this.queue.length,
       pendingResults: this.pending.size,
       maps: this.config.maps.length,
@@ -763,6 +802,17 @@ class Bridge {
           this.sendJson(res, 500, { ok: false, message: error.message });
         }
       });
+    });
+
+    this.server.on('error', (error) => {
+      if (error.code === 'EADDRINUSE') {
+        console.error(
+          `[bridge] Port ${this.config.bridgePort} is already in use. Another copy is probably already running.`
+        );
+        process.exit(3);
+      }
+      console.error('[bridge] Server error:', error.message);
+      process.exit(1);
     });
 
     this.server.listen(this.config.bridgePort, '127.0.0.1', () => {
